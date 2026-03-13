@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maryna Beauty — Centro Estetico Milano</title>
+<meta name="description" content="Maryna Beauty, centro estetico di lusso a Milano. Trattamenti viso, massaggi, nail art, epilazione e trucco professionale. Prenota il tuo appuntamento.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f9f4ef;
+    --warm: #f0e6d8;
+    --blush: #d4a89a;
+    --rose: #b07060;
+    --deep: #3a2820;
+    --gold: #c9a96e;
+    --light-gold: #e8d5b0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 24px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(249,244,239,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300; letter-spacing: 0.12em;
+    color: var(--deep); text-decoration: none;
+  }
+  .logo span { color: var(--gold); font-style: italic; }
+  nav ul { list-style: none; display: flex; gap: 40px; }
+  nav ul a {
+    font-size: 0.75rem; font-weight: 300; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--deep);
+    text-decoration: none; transition: color 0.3s;
+  }
+  nav ul a:hover { color: var(--rose); }
+  .nav-cta {
+    font-size: 0.72rem; font-weight: 300; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 10px 24px;
+    border: 1px solid var(--gold); color: var(--deep);
+    text-decoration: none; transition: all 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: white; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 60px 80px 80px;
+  }
+  .hero-tag {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px; font-weight: 300;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 5vw, 5.5rem);
+    font-weight: 300; line-height: 1.05;
+    margin-bottom: 28px;
+  }
+  h1 em { font-style: italic; color: var(--rose); }
+  .hero-desc {
+    font-size: 0.9rem; font-weight: 300; line-height: 1.9;
+    color: #6b5245; max-width: 380px; margin-bottom: 48px;
+  }
+  .hero-btns { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    padding: 14px 36px; background: var(--rose);
+    color: white; text-decoration: none;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 300; transition: all 0.3s;
+  }
+  .btn-primary:hover { background: var(--deep); }
+  .btn-secondary {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--deep); text-decoration: none; font-weight: 300;
+    display: flex; align-items: center; gap: 10px; transition: gap 0.3s;
+  }
+  .btn-secondary:hover { gap: 16px; }
+  .btn-secondary::after { content: '→'; }
+
+  .hero-right { position: relative; overflow: hidden; background: var(--warm); }
+  .hero-image-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #e8d5c0 0%, #d4a89a 40%, #b07060 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .hero-image-placeholder::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-monogram {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12rem; font-weight: 300; color: rgba(255,255,255,0.15);
+    font-style: italic; user-select: none;
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-badge {
+    position: absolute; bottom: 40px; right: 40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.4);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: white; text-align: center; backdrop-filter: blur(4px);
+  }
+  .hero-badge strong {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; line-height: 1;
+  }
+  .hero-badge span {
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    opacity: 0.8; margin-top: 4px;
+  }
+
+  /* STRIP */
+  .strip { background: var(--deep); padding: 20px 0; overflow: hidden; }
+  .strip-inner {
+    display: flex; gap: 60px; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .strip-item {
+    display: flex; align-items: center; gap: 16px;
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--light-gold); font-weight: 300; flex-shrink: 0;
+  }
+  .strip-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+
+  /* INTRO */
+  .intro {
+    padding: 120px 80px;
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 80px; align-items: center;
+  }
+  .intro-label {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 300; writing-mode: vertical-rl;
+    transform: rotate(180deg); align-self: stretch; display: flex; align-items: center;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+    font-weight: 300; line-height: 1.2; margin-bottom: 28px;
+  }
+  h2 em { font-style: italic; color: var(--rose); }
+  .intro-text {
+    font-size: 0.9rem; font-weight: 300; line-height: 2; color: #6b5245; max-width: 540px;
+  }
+  .intro-stats {
+    display: flex; gap: 60px; margin-top: 56px;
+    padding-top: 40px; border-top: 1px solid var(--light-gold);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300; color: var(--rose); line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #8a6a5a; font-weight: 300; margin-top: 6px;
+  }
+
+  /* SERVICES */
+  .services { padding: 100px 80px; background: var(--warm); }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .section-tag {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 300; margin-bottom: 12px;
+  }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card {
+    background: var(--cream); padding: 48px 40px;
+    position: relative; overflow: hidden; transition: transform 0.4s;
+  }
+  .service-card:hover { transform: translateY(-4px); }
+  .service-card::before {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blush), var(--gold));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon { font-size: 2rem; margin-bottom: 24px; display: block; }
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400; margin-bottom: 14px;
+  }
+  .service-desc { font-size: 0.82rem; font-weight: 300; line-height: 1.8; color: #6b5245; }
+  .service-price {
+    margin-top: 28px; font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); font-weight: 300;
+  }
+
+  /* BOOKING */
+  .booking {
+    padding: 120px 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .booking-form {
+    background: var(--warm); padding: 56px; border: 1px solid var(--light-gold);
+  }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300; margin-bottom: 32px;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block; font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 300; color: #8a6a5a; margin-bottom: 8px;
+  }
+  .form-group input, .form-group select {
+    width: 100%; padding: 12px 0;
+    border: none; border-bottom: 1px solid var(--light-gold);
+    background: transparent; font-family: 'Jost', sans-serif;
+    font-size: 0.9rem; font-weight: 300; color: var(--deep);
+    outline: none; transition: border-color 0.3s; appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-bottom-color: var(--rose); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .btn-book {
+    width: 100%; margin-top: 16px; padding: 16px;
+    background: var(--rose); color: white; border: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+    font-weight: 300; cursor: pointer; transition: background 0.3s;
+  }
+  .btn-book:hover { background: var(--deep); }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 100px 80px; background: var(--deep); }
+  .testimonials .section-tag { color: var(--light-gold); }
+  .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; }
+  .test-card { padding: 40px; border: 1px solid rgba(201,169,110,0.2); }
+  .test-stars { color: var(--gold); font-size: 0.8rem; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .test-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300; font-style: italic;
+    line-height: 1.7; color: var(--light-gold); margin-bottom: 24px;
+  }
+  .test-author { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 300; }
+
+  /* FOOTER */
+  footer {
+    background: #221510; padding: 80px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; color: var(--cream); letter-spacing: 0.1em;
+  }
+  .footer-logo span { font-style: italic; color: var(--gold); }
+  .footer-tagline { font-size: 0.78rem; font-weight: 300; color: #8a7060; line-height: 1.8; margin-top: 16px; max-width: 240px; }
+  .footer-col h4 {
+    font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 300; margin-bottom: 24px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a { font-size: 0.82rem; font-weight: 300; color: #8a7060; text-decoration: none; transition: color 0.3s; }
+  .footer-col ul a:hover { color: var(--light-gold); }
+  .footer-bottom {
+    background: #221510; padding: 20px 80px;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 0.7rem; color: #5a4030; font-weight: 300; letter-spacing: 0.1em; }
+
+  /* ANIMATIONS */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(-5deg); }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav ul, .nav-cta { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vh; }
+    .hero-left { padding: 60px 24px; }
+    .intro { grid-template-columns: 1fr; padding: 60px 24px; }
+    .intro-label { display: none; }
+    .services { padding: 60px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .booking { grid-template-columns: 1fr; padding: 60px 24px; }
+    .testimonials { padding: 60px 24px; }
+    .test-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr 1fr; padding: 60px 24px; }
+    .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Maryna <span>Beauty</span></a>
+  <ul>
+    <li><a href="#servizi">Servizi</a></li>
+    <li><a href="#chi-siamo">Chi Siamo</a></li>
+    <li><a href="#prenotazione">Prenota</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+  </ul>
+  <a href="#prenotazione" class="nav-cta">Prenota Ora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Centro Estetico · Milano</div>
+    <h1>La tua<br>bellezza,<br>curata da <em>Maryna.</em></h1>
+    <p class="hero-desc">Trattamenti esclusivi e rituali di benessere firmati Maryna Beauty. Un rifugio di lusso nel cuore di Milano dove ogni dettaglio è pensato per te.</p>
+    <div class="hero-btns">
+      <a href="#prenotazione" class="btn-primary">Prenota un Trattamento</a>
+      <a href="#servizi" class="btn-secondary">Scopri i Servizi</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-placeholder">
+      <div class="hero-monogram">M</div>
+      <div class="hero-badge">
+        <strong>15+</strong>
+        <span>Anni di<br>Esperienza</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item"><span class="strip-dot"></span>Trattamenti Viso</span>
+    <span class="strip-item"><span class="strip-dot"></span>Massaggi Rilassanti</span>
+    <span class="strip-item"><span class="strip-dot"></span>Nail Art & Manicure</span>
+    <span class="strip-item"><span class="strip-dot"></span>Epilazione</span>
+    <span class="strip-item"><span class="strip-dot"></span>Trucco Professionale</span>
+    <span class="strip-item"><span class="strip-dot"></span>Trattamenti Corpo</span>
+    <span class="strip-item"><span class="strip-dot"></span>Trattamenti Viso</span>
+    <span class="strip-item"><span class="strip-dot"></span>Massaggi Rilassanti</span>
+    <span class="strip-item"><span class="strip-dot"></span>Nail Art & Manicure</span>
+    <span class="strip-item"><span class="strip-dot"></span>Epilazione</span>
+    <span class="strip-item"><span class="strip-dot"></span>Trucco Professionale</span>
+    <span class="strip-item"><span class="strip-dot"></span>Trattamenti Corpo</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro" id="chi-siamo">
+  <div class="intro-label">La Nostra Filosofia</div>
+  <div class="intro-content fade-in">
+    <div class="section-tag">Chi Siamo</div>
+    <h2>Maryna e il suo<br>rituale di cura <em>autentica</em></h2>
+    <p class="intro-text">Maryna ha fondato il suo centro estetico con una missione precisa: offrire trattamenti di altissima qualità in un ambiente accogliente e raffinato. Con oltre 15 anni di esperienza nel settore, Maryna e il suo team utilizzano esclusivamente prodotti di alta gamma per valorizzare la bellezza naturale di ogni cliente.</p>
+    <div class="intro-stats">
+      <div>
+        <div class="stat-num">2.400+</div>
+        <div class="stat-label">Clienti Fedeli</div>
+      </div>
+      <div>
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Trattamenti</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Prodotti Naturali</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servizi">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">I Nostri Servizi</div>
+      <h2>I rituali di <em>bellezza</em> di Maryna</h2>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-in">
+      <span class="service-icon">✦</span>
+      <div class="service-name">Trattamenti Viso</div>
+      <p class="service-desc">Pulizia profonda, idratazione intensa e rituali anti-età con prodotti bio certificati. Ogni trattamento è personalizzato da Maryna per la tua pelle.</p>
+      <div class="service-price">da €65</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">◈</span>
+      <div class="service-name">Massaggi & Corpo</div>
+      <p class="service-desc">Massaggi rilassanti, drenanti e rigeneranti. Trattamenti corpo con avvolgimenti di fango, alghe e oli essenziali pregiati.</p>
+      <div class="service-price">da €80</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">❋</span>
+      <div class="service-name">Nail Art & Manicure</div>
+      <p class="service-desc">Manicure e pedicure di lusso, gel, semipermanente e nail art personalizzata realizzata da artiste specializzate.</p>
+      <div class="service-price">da €35</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">◇</span>
+      <div class="service-name">Epilazione</div>
+      <p class="service-desc">Epilazione con ceretta tradizionale, cera araba o luce pulsata per risultati duraturi e una pelle vellutata.</p>
+      <div class="service-price">da €20</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">✿</span>
+      <div class="service-name">Trucco Professionale</div>
+      <p class="service-desc">Make-up per occasioni speciali, sposa, cerimonie. Lezioni personalizzate con Maryna per valorizzarti ogni giorno.</p>
+      <div class="service-price">da €90</div>
+    </div>
+    <div class="service-card fade-in">
+      <span class="service-icon">⬡</span>
+      <div class="service-name">Pacchetti Benessere</div>
+      <p class="service-desc">Percorsi completi di bellezza e relax firmati Maryna Beauty. Ideali come regalo o per una giornata intera di puro benessere.</p>
+      <div class="service-price">da €150</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="prenotazione">
+  <div class="booking-text fade-in">
+    <div class="section-tag">Prenotazioni</div>
+    <h2>Prenota il tuo<br>appuntamento<br>con <em>Maryna</em></h2>
+    <p style="font-size:0.9rem;font-weight:300;line-height:2;color:#6b5245;margin-top:20px;max-width:380px;">Scegli il trattamento e lascia che Maryna si prenda cura di te. La consultazione iniziale è sempre gratuita.</p>
+    <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:40px;height:40px;border:1px solid var(--light-gold);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">📍</div>
+        <div style="font-size:0.82rem;font-weight:300;color:#6b5245;">Via della Spiga 12, Milano</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:40px;height:40px;border:1px solid var(--light-gold);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">🕐</div>
+        <div style="font-size:0.82rem;font-weight:300;color:#6b5245;">Lun–Sab: 9:00 – 20:00</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:40px;height:40px;border:1px solid var(--light-gold);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">📞</div>
+        <div style="font-size:0.82rem;font-weight:300;color:#6b5245;">+39 02 1234 5678</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:40px;height:40px;border:1px solid var(--light-gold);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">📱</div>
+        <div style="font-size:0.82rem;font-weight:300;color:#6b5245;">@marynabeauty.milano</div>
+      </div>
+    </div>
+  </div>
+  <div class="booking-form fade-in">
+    <div class="form-title">Prenota con Maryna</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" placeholder="Anna">
+      </div>
+      <div class="form-group">
+        <label>Cognome</label>
+        <input type="text" placeholder="Rossi">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="anna@email.it">
+    </div>
+    <div class="form-group">
+      <label>Telefono</label>
+      <input type="tel" placeholder="+39 333 000 0000">
+    </div>
+    <div class="form-group">
+      <label>Servizio</label>
+      <select>
+        <option>Seleziona un trattamento...</option>
+        <option>Trattamento Viso</option>
+        <option>Massaggio Rilassante</option>
+        <option>Manicure & Nail Art</option>
+        <option>Epilazione</option>
+        <option>Trucco Professionale</option>
+        <option>Pacchetto Benessere</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date">
+      </div>
+      <div class="form-group">
+        <label>Orario</label>
+        <select>
+          <option>9:00</option><option>10:00</option><option>11:00</option>
+          <option>14:00</option><option>15:00</option><option>16:00</option>
+          <option>17:00</option><option>18:00</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-book">Richiedi Appuntamento</button>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-tag">Recensioni</div>
+  <h2 style="color:var(--cream)">Cosa dicono<br>le clienti di <em>Maryna</em></h2>
+  <div class="test-grid">
+    <div class="test-card fade-in">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Maryna è semplicemente straordinaria. Professionale, attenta e con mani magiche. Mi sono sentita come una regina dal primo momento."</p>
+      <div class="test-author">Sofia M. — Cliente dal 2018</div>
+    </div>
+    <div class="test-card fade-in">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Il massaggio rilassante di Maryna è qualcosa di unico. Un'oasi di pace nel caos di Milano. Ci torno ogni mese, non potrei farne a meno!"</p>
+      <div class="test-author">Giulia T. — Cliente dal 2020</div>
+    </div>
+    <div class="test-card fade-in">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Ho fatto il trattamento viso anti-età con Maryna e la differenza è visibile da subito. Prodotti eccellenti e una cura del dettaglio rara."</p>
+      <div class="test-author">Francesca B. — Cliente dal 2015</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contatti">
+  <div>
+    <div class="footer-logo">Maryna <span>Beauty</span></div>
+    <p class="footer-tagline">Il tuo centro estetico di fiducia nel cuore di Milano. Bellezza autentica, cura artigianale.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Servizi</h4>
+    <ul>
+      <li><a href="#servizi">Trattamenti Viso</a></li>
+      <li><a href="#servizi">Massaggi</a></li>
+      <li><a href="#servizi">Nail Art</a></li>
+      <li><a href="#servizi">Epilazione</a></li>
+      <li><a href="#servizi">Trucco</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Centro</h4>
+    <ul>
+      <li><a href="#chi-siamo">Chi Siamo</a></li>
+      <li><a href="#chi-siamo">Il Nostro Team</a></li>
+      <li><a href="#servizi">Prodotti</a></li>
+      <li><a href="#prenotazione">Gift Card</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contatti</h4>
+    <ul>
+      <li><a href="#">Via della Spiga 12</a></li>
+      <li><a href="#">Milano, 20121</a></li>
+      <li><a href="tel:+390212345678">+39 02 1234 5678</a></li>
+      <li><a href="mailto:info@marynabeauty.it">info@marynabeauty.it</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Maryna Beauty — Centro Estetico Milano. Tutti i diritti riservati.</p>
+  <p>Privacy Policy · Cookie Policy</p>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  document.querySelector('.btn-book').addEventListener('click', () => {
+    alert('Grazie! La tua richiesta è stata inviata a Maryna. Ti contatteremo presto per confermare l\'appuntamento. 💐');
+  });
+</script>
+</body>
+</html>
