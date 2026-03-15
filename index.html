@@ -6,6 +6,7 @@
 <title>Maryna Beauty — Centro Estetico Milano</title>
 <meta name="description" content="Maryna Beauty, centro estetico di lusso a Milano. Trattamenti viso, massaggi, nail art, epilazione e trucco professionale. Prenota il tuo appuntamento.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root {
     --cream: #f9f4ef;
@@ -246,8 +247,29 @@
     font-family: 'Jost', sans-serif;
     font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
     font-weight: 300; cursor: pointer; transition: background 0.3s;
+    position: relative;
   }
   .btn-book:hover { background: var(--deep); }
+  .btn-book:disabled { background: #aaa; cursor: not-allowed; }
+
+  /* BOOKING STATUS MESSAGES */
+  .booking-status {
+    display: none; margin-top: 16px; padding: 16px 20px;
+    font-size: 0.82rem; font-weight: 300; line-height: 1.6;
+    border-left: 3px solid;
+  }
+  .booking-status.success {
+    display: block;
+    background: #f0faf0; border-color: #5a9a5a; color: #2a5a2a;
+  }
+  .booking-status.error {
+    display: block;
+    background: #faf0f0; border-color: #c07060; color: #5a2020;
+  }
+  .booking-status.loading {
+    display: block;
+    background: var(--warm); border-color: var(--gold); color: var(--deep);
+  }
 
   /* TESTIMONIALS */
   .testimonials { padding: 100px 80px; background: var(--deep); }
@@ -475,25 +497,25 @@
     <div class="form-row">
       <div class="form-group">
         <label>Nome</label>
-        <input type="text" placeholder="Anna">
+        <input type="text" id="nome" placeholder="Anna">
       </div>
       <div class="form-group">
         <label>Cognome</label>
-        <input type="text" placeholder="Rossi">
+        <input type="text" id="cognome" placeholder="Rossi">
       </div>
     </div>
     <div class="form-group">
       <label>Email</label>
-      <input type="email" placeholder="anna@email.it">
+      <input type="email" id="email" placeholder="anna@email.it">
     </div>
     <div class="form-group">
       <label>Telefono</label>
-      <input type="tel" placeholder="+39 333 000 0000">
+      <input type="tel" id="telefono" placeholder="+39 333 000 0000">
     </div>
     <div class="form-group">
       <label>Servizio</label>
-      <select>
-        <option>Seleziona un trattamento...</option>
+      <select id="servizio">
+        <option value="">Seleziona un trattamento...</option>
         <option>Trattamento Viso</option>
         <option>Massaggio Rilassante</option>
         <option>Manicure & Nail Art</option>
@@ -505,18 +527,19 @@
     <div class="form-row">
       <div class="form-group">
         <label>Data</label>
-        <input type="date">
+        <input type="date" id="data">
       </div>
       <div class="form-group">
         <label>Orario</label>
-        <select>
+        <select id="orario">
           <option>9:00</option><option>10:00</option><option>11:00</option>
           <option>14:00</option><option>15:00</option><option>16:00</option>
           <option>17:00</option><option>18:00</option>
         </select>
       </div>
     </div>
-    <button class="btn-book">Richiedi Appuntamento</button>
+    <button class="btn-book" id="btnBook">Richiedi Appuntamento</button>
+    <div class="booking-status" id="bookingStatus"></div>
   </div>
 </section>
 
@@ -584,6 +607,19 @@
 </div>
 
 <script>
+  // ─── CONFIGURAZIONE ───────────────────────────────────────────────
+  const GOOGLE_API_KEY   = 'AIzaSyCGooDNJJAq6IHTBz0fazYg2B_DH1lQpHI';
+  const CALENDAR_ID      = '15eecda2adfb3435e5858100fde51d67791067e10131a7bf4eaf2dd25a1c3320@group.calendar.google.com';
+  const EMAILJS_SERVICE  = 'service_5g90pfi';
+  const EMAILJS_PUBLIC   = 'EvoJ1bj7HhfNX5Ka7';
+  const TEMPLATE_OK      = 'template_n300n8f';
+  const TEMPLATE_NO      = 'template_u6dy615';
+  // ──────────────────────────────────────────────────────────────────
+
+  // Inizializza EmailJS
+  emailjs.init(EMAILJS_PUBLIC);
+
+  // Fade-in scroll observer
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -591,6 +627,7 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+  // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
@@ -598,8 +635,122 @@
     });
   });
 
-  document.querySelector('.btn-book').addEventListener('click', () => {
-    alert('Grazie! La tua richiesta è stata inviata a Maryna. Ti contatteremo presto per confermare l\'appuntamento. 💐');
+  // Imposta data minima = oggi
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('data').setAttribute('min', today);
+
+  // ─── FUNZIONE: Controlla disponibilità su Google Calendar ─────────
+  async function checkAvailability(dateStr, timeStr) {
+    const [hour, minute] = timeStr.split(':').map(Number);
+    const startDt = new Date(`${dateStr}T${String(hour).padStart(2,'0')}:${String(minute||0).padStart(2,'0')}:00`);
+    const endDt   = new Date(startDt.getTime() + 60 * 60 * 1000); // slot da 60 min
+
+    const timeMin = startDt.toISOString();
+    const timeMax = endDt.toISOString();
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`
+      + `?key=${GOOGLE_API_KEY}`
+      + `&timeMin=${encodeURIComponent(timeMin)}`
+      + `&timeMax=${encodeURIComponent(timeMax)}`
+      + `&singleEvents=true`
+      + `&orderBy=startTime`;
+
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('Errore Google Calendar API');
+    const data = await resp.json();
+    // Se non ci sono eventi → slot libero
+    return data.items.length === 0;
+  }
+
+  // ─── FUNZIONE: Formato data leggibile ─────────────────────────────
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('it-IT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  // ─── HANDLER PRENOTAZIONE ─────────────────────────────────────────
+  document.getElementById('btnBook').addEventListener('click', async () => {
+    const nome     = document.getElementById('nome').value.trim();
+    const cognome  = document.getElementById('cognome').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const servizio = document.getElementById('servizio').value;
+    const data     = document.getElementById('data').value;
+    const orario   = document.getElementById('orario').value;
+    const btn      = document.getElementById('btnBook');
+    const status   = document.getElementById('bookingStatus');
+
+    // Validazione
+    if (!nome || !cognome || !email || !servizio || !data) {
+      status.className = 'booking-status error';
+      status.textContent = '⚠️ Per favore compila tutti i campi obbligatori.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status.className = 'booking-status error';
+      status.textContent = '⚠️ Inserisci un indirizzo email valido.';
+      return;
+    }
+
+    // Loading
+    btn.disabled = true;
+    btn.textContent = 'Verifica disponibilità...';
+    status.className = 'booking-status loading';
+    status.textContent = '⏳ Stiamo controllando la disponibilità del tuo orario...';
+
+    try {
+      const available = await checkAvailability(data, orario);
+      const dataLeggibile = formatDate(data);
+
+      if (available) {
+        // ✅ SLOT LIBERO → invia mail di CONFERMA
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_OK, {
+          to_email: email,
+          nome:     nome,
+          cognome:  cognome,
+          data:     dataLeggibile,
+          orario:   orario,
+          servizio: servizio,
+          telefono: telefono || 'Non fornito'
+        });
+
+        status.className = 'booking-status success';
+        status.innerHTML = `✅ <strong>Appuntamento confermato!</strong><br>
+          Cara ${nome}, ti aspettiamo il <strong>${dataLeggibile}</strong> alle <strong>${orario}</strong> per il tuo <strong>${servizio}</strong>.<br>
+          Hai ricevuto un'email di conferma a <em>${email}</em>. A presto! 💐`;
+
+        btn.textContent = '✅ Appuntamento Confermato';
+        btn.style.background = '#5a9a5a';
+
+      } else {
+        // ❌ SLOT OCCUPATO → invia mail di RIFIUTO
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_NO, {
+          to_email: email,
+          nome:     nome,
+          cognome:  cognome,
+          data:     dataLeggibile,
+          orario:   orario,
+          servizio: servizio
+        });
+
+        status.className = 'booking-status error';
+        status.innerHTML = `❌ <strong>Orario non disponibile.</strong><br>
+          Cara ${nome}, purtroppo il <strong>${dataLeggibile}</strong> alle <strong>${orario}</strong> è già occupato.<br>
+          Ti abbiamo inviato un'email a <em>${email}</em>. Scegli un altro orario e riprova.`;
+
+        btn.textContent = 'Richiedi Appuntamento';
+        btn.disabled = false;
+        btn.style.background = '';
+      }
+
+    } catch (err) {
+      console.error(err);
+      status.className = 'booking-status error';
+      status.innerHTML = `⚠️ <strong>Si è verificato un errore.</strong><br>
+        Riprova tra qualche minuto o contattaci direttamente al <a href="tel:+390212345678">+39 02 1234 5678</a>.`;
+      btn.textContent = 'Richiedi Appuntamento';
+      btn.disabled = false;
+    }
   });
 </script>
 </body>
